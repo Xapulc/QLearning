@@ -120,9 +120,9 @@ class Bandit:
 
 
 if __name__ == "__main__":
-    n = 10
-    count_learn = 2000
-    variance = 1
+    n = 10000
+    count_learn = 100
+    variance = 10
 
     expectations = np.random.normal(0, 1, n)
     data = create_data(n, count_learn, expectations, variance)
