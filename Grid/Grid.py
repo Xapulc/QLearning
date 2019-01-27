@@ -1,4 +1,5 @@
 import numpy as np
+from time import time
 from I2Point import I2Point
 
 
@@ -90,8 +91,11 @@ class Grid(object):
 
 
 if __name__ == "__main__":
-    grid = Grid(6)
+    grid = Grid(1000)
+    start = time()
     grid.set_strategies()
     grid.IES(0.002)
     grid.set_strategies()
-    print(grid)
+    end = time()
+    print(end - start)
+    # print(grid)
