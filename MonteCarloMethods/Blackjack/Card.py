@@ -13,7 +13,7 @@ class Card(object):
         return hash(self._name)
 
     def name(self):
-        return self._name.copy()
+        return self._name
 
     def __str__(self):
-        return f"Card: {self._name}"
+        return f"{self._name}"
