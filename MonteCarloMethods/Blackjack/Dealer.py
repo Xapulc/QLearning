@@ -7,5 +7,5 @@ class Dealer(Player):
         self._value_limit = 17
 
     def move(self):
-        while self._game.points(str(Dealer)) < self._value_limit:
-            self._game.hit(str(Dealer))
+        while self._game.points(Dealer.__name__) < self._value_limit:
+            self._game.hit(Dealer.__name__)

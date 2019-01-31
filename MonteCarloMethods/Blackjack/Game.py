@@ -26,8 +26,6 @@ class Game(object):
 
 if __name__ == "__main__":
     game = Game()
-    print(game.play("player"))
+    res = game.play("player")
     print(game)
-    # blackjack = Blackjack()
-    # blackjack._dealer_cards = [Card("5"), Card("4"), Card("Q"), Card("7")]
-    # blackjack.points(blackjack._dealer)
+    print(f"Res: {res}")

@@ -2,6 +2,7 @@ from random import choice
 from Card import Card
 from Dealer import Dealer
 from Gambler import Gambler
+from Player import Player
 
 
 class Blackjack:
@@ -9,8 +10,8 @@ class Blackjack:
         self._cards = Card.get_possible_choice()
         self._limit = 21
 
-        self._dealer = str(Dealer)
-        self._gambler = str(Gambler)
+        self._dealer = Dealer.__name__
+        self._gambler = Gambler.__name__
         self._gambler_cards = []
         self._dealer_cards = []
 
