@@ -1,5 +1,4 @@
 from MonteCarloMethods.Blackjack.Player import Player
-from MonteCarloMethods.Blackjack.State import State
 
 
 class Gambler(Player):
@@ -8,8 +7,7 @@ class Gambler(Player):
         self._policy = policy
 
     def move(self):
-        while self._policy.move(self.state()) == "hit":
-            self._game.hit(Gambler.__name__)
+        return self._policy.move(self.state())
 
     def state(self, num=None):
         return self._game.get_state(Gambler.__name__, num)

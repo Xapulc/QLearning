@@ -19,14 +19,21 @@ class Game(object):
     def play(self, mode):
         self.blackjack.hand()
         if mode == "comp":
-            self.gambler.move()
+            while self.gambler.move() == "hit":
+                if Blackjack.limit >= self.blackjack.score(Gambler.__name__):
+                    self._policy.update(self.gambler.state(-1), "hit", 0)
+                else:
+                    last_action = "hit"
+                    break
+            else:
+                last_action = "stick"
         elif mode == "player":
             self.gambler.player_move()
         else:
             raise AssertionError("Wrong mode")
         self.dealer.move()
         if mode == "comp":
-            self._policy.update_values(self.gambler.state(-1), self.blackjack.result())
+            self._policy.update(self.gambler.state(-1), last_action, self.blackjack.result())
         return self.blackjack.result()
 
     def __str__(self):
@@ -35,16 +42,16 @@ class Game(object):
 
 if __name__ == "__main__":
     policy = Policy()
-    for _ in range(100000):
+    for _ in range(50000):
         game = Game(policy)
         res = game.play("comp")
 
-    x = range(2, 22, 1)
+    x = range(12, 22, 1)
     y = range(2, 12, 1)
     xgrid, ygrid = numpy.meshgrid(x, y)
-    zgrid_usable = numpy.array([[policy._values[State(score, enemy_card, True)]
+    zgrid_usable = numpy.array([[1 if policy.move(State(score, enemy_card, True)) == "hit" else 0
                                  for score in x] for enemy_card in y])
-    zgrid_non_usable = numpy.array([[policy._values[State(score, enemy_card, False)]
+    zgrid_non_usable = numpy.array([[1 if policy.move(State(score, enemy_card, False)) == "hit" else 0
                                      for score in x] for enemy_card in y])
 
     fig = pylab.figure()
