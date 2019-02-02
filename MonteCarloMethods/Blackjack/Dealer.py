@@ -1,4 +1,4 @@
-from Player import Player
+from MonteCarloMethods.Blackjack.Player import Player
 
 
 class Dealer(Player):
@@ -7,5 +7,5 @@ class Dealer(Player):
         self._value_limit = 17
 
     def move(self):
-        while self._game.points(Dealer.__name__) < self._value_limit:
+        while self._game.score(Dealer.__name__) < self._value_limit:
             self._game.hit(Dealer.__name__)

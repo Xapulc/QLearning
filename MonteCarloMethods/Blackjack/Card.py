@@ -12,8 +12,20 @@ class Card(object):
     def __hash__(self):
         return hash(self._name)
 
+    def __eq__(self, other):
+        return self.name() == other.name()
+
     def name(self):
         return self._name
+
+    @property
+    def value(self):
+        if self._name == "A":
+            return 11
+        elif self.name() in {"J", "Q", "K"}:
+            return 10
+        else:
+            return int(self.name())
 
     def __str__(self):
         return f"{self._name}"
