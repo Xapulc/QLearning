@@ -12,16 +12,16 @@ class Gambler(Player):
     def state(self, num=None):
         return self._game.get_state(Gambler.__name__, num)
 
-    def player_move(self):
-        print(self._game.get_game(Gambler.__name__))
-        while True:
-            step = input("Choose hit or stick")
-            if step == "hit":
-                self._game.hit(Gambler.__name__)
-                print(self._game.get_game(Gambler.__name__))
-                if self._game.score(Gambler.__name__) >= 21:
-                    break
-            elif step == "stick":
-                break
-            else:
-                print("Wrong enter")
+    # def player_move(self):
+    #     print(self._game.get_game(Gambler.__name__))
+    #     while True:
+    #         step = input("Choose hit or stick")
+    #         if step == "hit":
+    #             self._game.hit(Gambler.__name__)
+    #             print(self._game.get_game(Gambler.__name__))
+    #             if self._game.score(Gambler.__name__) >= 21:
+    #                 break
+    #         elif step == "stick":
+    #             break
+    #         else:
+    #             print("Wrong enter")
