@@ -1,4 +1,5 @@
 import pylab
+from mpl_toolkits.mplot3d import Axes3D
 import numpy
 
 from MonteCarloMethods.Blackjack.Blackjack import Blackjack
@@ -9,33 +10,35 @@ from MonteCarloMethods.Blackjack.State import State
 
 
 class Game(object):
-    def __init__(self, policy):
+    def __init__(self, policy=None):
         self._policy = policy
         self.blackjack = Blackjack()
         self.gambler = Gambler(self.blackjack, policy)
         self.dealer = Dealer(self.blackjack)
 
     def play(self, mode):
+        move = self.gambler.move if mode == "comp" else self.gambler.player_move
         self.blackjack.hand()
-        if mode == "comp":
-            last_action = "stick"
-            while self.gambler.move() == "hit":
-                self.blackjack.hit(Gambler.__name__)
-                if Blackjack.limit < self.blackjack.score(Gambler.__name__):
-                    last_action = "hit"
-                    break
-                else:
+        last_action = "stick"
+
+        while move() == "hit":
+            self.blackjack.hit(Gambler.__name__)
+            if Blackjack.limit < self.blackjack.score(Gambler.__name__):
+                last_action = "hit"
+                break
+            else:
+                if mode == "comp":
                     self._policy.update(self.gambler.state(-1), "hit", 0)
-        # elif mode == "player":
-        #     self.gambler.player_move()
-        else:
-            raise AssertionError("Wrong mode")
+
         self.dealer.move()
         if mode == "comp":
             if last_action == "stick":
                 self._policy.update(self.gambler.state(), "stick", self.blackjack.result())
             else:
                 self._policy.update(self.gambler.state(-1), "hit", self.blackjack.result())
+        else:
+            print(self.blackjack)
+            print(f"Result: {self.blackjack.result()}")
         return self.blackjack.result()
 
     def __str__(self):
@@ -43,8 +46,8 @@ class Game(object):
 
 
 if __name__ == "__main__":
-    eps = 0.1
-    count = 1000000
+    eps = 0.5
+    count = 5000000
     limit = count // 2
     gambler_wins = 0
     dealer_wins = 0
@@ -83,11 +86,12 @@ if __name__ == "__main__":
 
     fig = pylab.figure()
 
-    plt1 = fig.add_subplot(211, projection="3d", xlabel="score", ylabel="card value", title="usable ace, stick - hit")
-    plt3 = fig.add_subplot(212, projection="3d", xlabel="score", ylabel="card value", title="no usable ace, stick - hit")
+    plot_usable = fig.add_subplot(211, projection="3d", xlabel="score", ylabel="card value", title="usable ace, stick - hit")
+    plot_non_usable = fig.add_subplot(212, projection="3d", xlabel="score", ylabel="card value", title="no usable ace, stick - hit")
 
-    plt1.plot_surface(xgrid, ygrid, zgrid_usable, cmap=pylab.cm.coolwarm)
-    plt3.plot_surface(xgrid, ygrid, zgrid_non_usable, cmap=pylab.cm.coolwarm)
+    plot_usable.plot_surface(xgrid, ygrid, zgrid_usable, cmap=pylab.cm.coolwarm)
+    plot_non_usable.plot_surface(xgrid, ygrid, zgrid_non_usable, cmap=pylab.cm.coolwarm)
+
     pylab.show()
 
     print(policy)
